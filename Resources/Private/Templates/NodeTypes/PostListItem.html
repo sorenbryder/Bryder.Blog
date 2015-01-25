@@ -1,0 +1,16 @@
+{namespace neos=TYPO3\Neos\ViewHelpers}
+{namespace m=TYPO3\Media\ViewHelpers}
+<div class="post">
+	<f:if condition="{postNodeIteration.index} < {node.properties.showImagesCount}">
+		<f:if condition="{postNode.properties.image}">
+			<m:image asset="{postNode.properties.image}" alt="{postNode.properties.imageTitleText}" maximumWidth="480"/>
+		</f:if>
+	</f:if>
+	<f:if condition="{postNode.properties.title}">
+		<div class="title"><h1><neos:link.node node="{postNode}">{postNode.properties.title}</neos:link.node></h1></div>
+	</f:if>
+	<f:if condition="{postNode.properties.publicationDate}">
+		<span class="publicationDateLabel">Published:</span> <span class="publicationDateValue">{postNode.properties.publicationDate -> f:format.date(format: 'd/m-Y')}</span>
+	</f:if>
+	{teaser -> f:format.raw()}
+</div>

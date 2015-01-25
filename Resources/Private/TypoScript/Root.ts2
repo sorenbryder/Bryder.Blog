@@ -1,0 +1,64 @@
+post = Page {
+	head {
+		stylesheets.site = TYPO3.TypoScript:Template {
+			templatePath = 'resource://Bryder.Blog/Private/Templates/Page/Post.html'
+			sectionName = 'stylesheets'
+		}
+
+		javascripts.site = TYPO3.TypoScript:Template {
+			templatePath = 'resource://Bryder.Blog/Private/Templates/Page/Post.html'
+			sectionName = 'headScripts'
+		}
+	}
+
+	body {
+		templatePath = 'resource://Bryder.Blog/Private/Templates/Page/Post.html'
+		sectionName = 'body'
+		parts {
+			menu = Menu
+		}
+		title = ${q(node).property('title')}
+		image = ${q(node).property('image')}
+		imageTitleText = ${q(node).property('imageTitleText')}
+		publicationDate = ${q(node).property('publicationDate')}
+		content {
+			teaser = TYPO3.Neos:ContentCollection {
+				nodePath = 'teaser'
+			}
+			main = PrimaryContent {
+				nodePath = 'main'
+			}
+		}
+		javascripts.site = TYPO3.TypoScript:Template {
+			templatePath = 'resource://Bryder.Blog/Private/Templates/Page/Post.html'
+			sectionName = 'bodyScripts'
+		}
+	}
+}
+
+prototype(Bryder.Blog:PostListItem) < prototype(TYPO3.TypoScript:Template) {
+	templatePath = 'resource://Bryder.Blog/Private/Templates/NodeTypes/PostListItem.html'
+	node = ${node}
+	postNode = ${postNode}
+	postNodeIteration = ${postNodeIteration}
+	teaser = ContentCollection {
+		nodePath = ${q(postNode).find('teaser').property('_path')}
+	}
+}
+
+prototype(Bryder.Blog:PostList) < prototype(TYPO3.Neos:Content) {
+	templatePath = 'resource://Bryder.Blog/Private/Templates/NodeTypes/PostList.html'
+	posts = TYPO3.TypoScript:Collection {
+		collection = ${q(site).find('[instanceof Bryder.Blog:Post]')}
+		itemName = 'postNode'
+		iterationName = 'postNodeIteration'
+		itemRenderer = Bryder.Blog:PostListItem
+	}
+	@cache {
+		mode = 'uncached'
+		context {
+			1 = 'site'
+			2 = 'node'
+		}
+    }
+}

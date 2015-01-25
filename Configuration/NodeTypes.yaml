@@ -1,0 +1,92 @@
+'Bryder.Blog:Post':
+  superTypes: ['TYPO3.Neos:Document']
+  childNodes:
+    'teaser':
+      type: 'TYPO3.Neos:ContentCollection'
+      constraints:
+        nodeTypes:
+          '*': FALSE
+          'TYPO3.Neos.NodeTypes:Text': TRUE
+    'main':
+      type: 'TYPO3.Neos:ContentCollection'          
+  ui:
+    label: 'Post'
+    icon: 'icon-file'
+    position: 150
+    inspector:
+      groups:
+        misc:
+          label: 'Miscellaneous'
+          position: 200
+        image:
+          label: 'Image'
+          position: 300
+  properties:
+    'layout':
+      type: string
+      defaultValue: 'post'  
+    'image':
+      type: TYPO3\Media\Domain\Model\ImageVariant
+      ui:
+        label: 'Image'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'image'
+          position: 50
+          editorOptions:
+            crop:
+              aspectRatio:
+                locked:
+                  width: 2
+                  height: 1
+    'imageTitleText':
+      type: string
+      ui:
+        label: 'Title text'
+        inspector:
+          group: 'image'
+          position: 100
+    'publicationDate':
+      type: date
+      ui:
+        label: 'Publication date'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'misc'
+          position: 100
+          editorOptions:
+            format: 'd-m-Y'
+      validation:
+        'TYPO3.Neos/Validation/DateTimeValidator': []
+
+'Bryder.Blog:PostList':
+  superTypes: ['TYPO3.Neos:Content']
+  ui:
+    label: 'Post list'
+    icon: 'icon-file'
+    group: 'plugins'
+    inspector:
+      groups:
+        settings:
+          label: 'Settings'
+          position: 100
+    inlineEditable: FALSE
+  properties:
+    showImages:
+      type: boolean
+      defaultValue: TRUE
+      ui:
+        label: 'Display images'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'settings'
+          position: 100
+    showImagesCount:
+      type: string
+      defaultValue: '3'
+      ui:
+        label: 'Display image counter'
+        reloadIfChanged: TRUE
+        inspector:
+          group: 'settings'
+          position: 200
